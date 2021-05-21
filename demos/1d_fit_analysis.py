@@ -6,27 +6,30 @@ variance. Comparison of training methods, EKF vs SGD.
 """
 # Dependencies
 from __future__ import division
-import numpy as np; npl = np.linalg
+
+import numpy as np;
+
+npl = np.linalg
 import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
 import kalmann
 
 # Get some noisy training data, a fun compact function
 stdev = 0.05
 U = np.arange(-10, 10, 0.2)
-Y = np.exp(-U**2) + 0.5*np.exp(-(U-3)**2) + np.random.normal(0, stdev, len(U))
+Y = np.exp(-U ** 2) + 0.5 * np.exp(-(U - 3) ** 2) + np.random.normal(0, stdev, len(U))
 
 # Repeat fitting experiment many times
-nepochs_ekf = 100; nepochs_sgd = 400
-ekf_results = []; sgd_results = []
+nepochs_ekf = 100;
+nepochs_sgd = 400
+ekf_results = [];
+sgd_results = []
 for i in xrange(50):
-
     # Create two identical KNN's that will be trained differently
     knn_ekf = kalmann.KNN(nu=1, ny=1, nl=10, neuron='logistic')
     knn_sgd = kalmann.KNN(nu=1, ny=1, nl=10, neuron='logistic')
 
     # Train
-    RMS_ekf, trcov = knn_ekf.train(nepochs=nepochs_ekf, U=U, Y=Y, method='ekf', P=0.5, Q=0, R=stdev**2, pulse_T=-1)
+    RMS_ekf, trcov = knn_ekf.train(nepochs=nepochs_ekf, U=U, Y=Y, method='ekf', P=0.5, Q=0, R=stdev ** 2, pulse_T=-1)
     RMS_sgd, _ = knn_sgd.train(nepochs=nepochs_sgd, U=U, Y=Y, method='sgd', step=0.05, pulse_T=-1)
 
     # Store results

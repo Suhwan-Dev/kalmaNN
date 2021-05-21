@@ -10,6 +10,7 @@ import numpy as np; npl = np.linalg
 from scipy.linalg import block_diag
 from time import time
 import pickle
+import matplotlib.pyplot as plt
 
 ##########
 
@@ -269,3 +270,5 @@ class KNN:
         self.W[1] = self.W[1] - step*np.hstack((np.outer(e, l), e[:, np.newaxis]))
         D = (e.dot(self.W[1][:, :-1])*self.dsig(l)).flatten()
         self.W[0] = self.W[0] - step*np.hstack((np.outer(D, u), D[:, np.newaxis]))
+
+plt.show()
